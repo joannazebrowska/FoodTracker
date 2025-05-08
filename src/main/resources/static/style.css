@@ -1,0 +1,72 @@
+body {
+  background-color: #e6f5f1;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.main-container {
+  margin: 0 auto;
+  max-width: 1260px;
+}
+
+.content-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr {
+  background-color: #009879;
+  color: white;
+  text-align: left;
+}
+
+.content-table th,
+.content-table td {
+  padding: 12px 15px;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.add-product-form label {
+  font-weight: 600;
+}
+
+.add-product-form input {
+  border: 1px solid #dddddd;
+  font-size: 15px;
+}
+
+.add-product-form button {
+  color: white;
+  background-color: #009879;
+  border: 3px solid #009879;
+  border-radius: 5px;
+  padding: 3px 12px;
+  font-size: 12px;
+}
+
+.add-product-form button:hover {
+  cursor: pointer;
+  filter: brightness(115%);
+}
+
+.add-product-form {
+  border: 2px solid #009879;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 20px;
+  display: block;
+}
