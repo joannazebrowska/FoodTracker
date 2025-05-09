@@ -1,5 +1,5 @@
 body {
-  background-color: #e6f5f1;
+  background-color: #FAF6E9;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -18,7 +18,7 @@ body {
 }
 
 .content-table thead tr {
-  background-color: #009879;
+  background-color: #A0C878;
   color: white;
   text-align: left;
 }
@@ -37,7 +37,7 @@ body {
 }
 
 .content-table tbody tr:last-of-type {
-  border-bottom: 2px solid #009879;
+  border-bottom: 2px solid #A0C878;
 }
 
 .add-product-form label {
@@ -68,5 +68,7 @@ body {
   border-radius: 5px;
   padding: 10px;
   margin-top: 20px;
+  margin: 20px auto;
   display: block;
+  background-color: #f9f9f9;
 }

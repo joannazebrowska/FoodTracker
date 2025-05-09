@@ -1,13 +1,13 @@
-window.onload = () => {
-  fetch("http://localhost:8080/products")
-    .then((response) => response.json())
-    .then((data) => fillProductTable(data));
+window.onload = () => { //kod uruchomi sie dopiero gdy strona calkowicie sie zaladuje (html,css,obrazki etc.)
+  fetch("http://localhost:8080/products") //wysyla zapytanie typu get do backendu springboot pod adresem /products
+    .then((response) => response.json()) //konwercja odp. http do formatu json(czyli obiektu JS)
+    .then((data) => fillProductTable(data));  //po pobraniu danych, przekazuje je do funkcji fillproducttable,ktora:
 };
 
 function fillProductTable(data) {
-  let table = document.querySelector("#product-table tbody");
+  let table = document.querySelector("#product-table tbody"); //zbiera referencje do tabeli w html (tbody)
 
-  data.forEach((x) => {
+  data.forEach((x) => { //do kazdego produktu z backendu (x) tworzy wiersz tr i 3 komorki td
     let newRow = document.createElement("tr");
 
     let id = document.createElement("td");
@@ -22,6 +22,45 @@ function fillProductTable(data) {
     expiryDate.textContent = x.expiry_date;
     newRow.appendChild(expiryDate);
 
+    let openingDate = document.createElement("td");
+    openingDate.textContent = x.opening_date ?? "—"; 
+    newRow.appendChild(openingDate);
+
+    let deleteButton = document.createElement("td");
+    deleteButton.innerHTML = `<button class="delete-btn" data-id="${x.id}">Usuń</button>`;
+    newRow.appendChild(deleteButton);
+
     table.appendChild(newRow);
   });
+  //ugulnie dane z backendu leca przez fetch, sa zamieniane na js-owy obiekt i automatycznie wysweitlane jako wiersze tabeli w htlm
+}
+
+document.querySelector(".add-product-form").addEventListener('submit', event => {
+    addProduct(event);
+})
+
+function addProduct(event) {
+    event.preventDefault();
+    let data = new FormData(event.target);
+    let newProduct = {}
+
+    data.forEach((value, key) => newProduct[key] = value)
+
+    fetch("http://localhost:8080/products", {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify([newProduct])
+    })
+    .then(response => {
+        if(response.ok) {
+            location.reload();
+        }
+    })
+}
+
+function deleteProduct(event) {
+
 }
