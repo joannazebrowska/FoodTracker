@@ -9,11 +9,7 @@ function fillProductTable(data) {
 
   data.forEach((x) => { //do kazdego produktu z backendu (x) tworzy wiersz tr i 3 komorki td
     let newRow = document.createElement("tr");
-
-    let id = document.createElement("td");
-    id.textContent = x.id;
-    newRow.appendChild(id);
-
+    
     let name = document.createElement("td");
     name.textContent = x.name;
     newRow.appendChild(name);
