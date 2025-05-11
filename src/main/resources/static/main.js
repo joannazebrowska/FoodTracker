@@ -10,21 +10,17 @@ function fillProductTable(data) {
   data.forEach((x) => { //do kazdego produktu z backendu (x) tworzy wiersz tr i 3 komorki td
     let newRow = document.createElement("tr");
 
-    let id = document.createElement("td");
-    id.textContent = x.id;
-    newRow.appendChild(id);
+    // let id = document.createElement("td");
+    // id.textContent = x.id;
+    // newRow.appendChild(id);
 
     let name = document.createElement("td");
     name.textContent = x.name;
     newRow.appendChild(name);
 
     let expiryDate = document.createElement("td");
-    expiryDate.textContent = x.expiry_date;
+    expiryDate.textContent = x.expiryDate;
     newRow.appendChild(expiryDate);
-
-    let openingDate = document.createElement("td");
-    openingDate.textContent = x.opening_date ?? "—"; 
-    newRow.appendChild(openingDate);
 
     let deleteButton = document.createElement("td");
     deleteButton.innerHTML = `<button class="delete-btn" data-id="${x.id}">Usuń</button>`;

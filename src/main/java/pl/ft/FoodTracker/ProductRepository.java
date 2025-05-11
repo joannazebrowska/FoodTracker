@@ -26,14 +26,14 @@ public class ProductRepository {
 
     public int save(List<Product> products) {
         products.forEach(product -> jdbcTemplate.update("INSERT INTO product(name, expiry_date) VALUES(?, ?)",
-                product.getName(), product.getExpiry_date()));
+                product.getName(), product.getExpiryDate()));
 
         return 1;
     }
 
     public int update(Product product) {
         return jdbcTemplate.update("UPDATE product SET name=?, expiry_date=? WHERE id=?",
-                product.getName(), product.getExpiry_date(), product.getId());
+                product.getName(), product.getExpiryDate(), product.getId());
     }
 
     public int delete(int id) {

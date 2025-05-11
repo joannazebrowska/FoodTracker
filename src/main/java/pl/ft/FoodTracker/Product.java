@@ -12,6 +12,5 @@ import java.time.LocalDate;
 public class Product {
     private int id;
     private String name;
-    private LocalDate expiry_date;
-    private LocalDate opening_date;
+    private LocalDate expiryDate;
 }
