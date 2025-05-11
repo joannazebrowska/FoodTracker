@@ -35,7 +35,7 @@ public class ProductController {
 
         if (product != null) {
             product.setName(updatedProduct.getName());
-            product.setExpiryDate(updatedProduct.getExpiryDate());
+            product.setExpiry_date(updatedProduct.getExpiry_date());
 
             productRepository.update(product);
 
@@ -51,7 +51,7 @@ public class ProductController {
 
         if (product != null) {
             if (updatedProduct.getName() != null) product.setName(updatedProduct.getName());
-            if (updatedProduct.getExpiryDate() != null) product.setExpiryDate(updatedProduct.getExpiryDate());
+            if (updatedProduct.getExpiry_date() != null) product.setExpiry_date(updatedProduct.getExpiry_date());
 
             productRepository.update(product);
 
