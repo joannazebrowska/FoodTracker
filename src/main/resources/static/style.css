@@ -20,12 +20,13 @@ body {
 .content-table thead tr {
   background-color: #A0C878;
   color: white;
-  text-align: left;
+  text-align: center;
 }
 
 .content-table th,
 .content-table td {
   padding: 12px 15px;
+  text-align: center;
 }
 
 .content-table tbody tr {
@@ -39,6 +40,7 @@ body {
 .content-table tbody tr:last-of-type {
   border-bottom: 2px solid #A0C878;
 }
+
 
 .add-product-form label {
   font-weight: 600;

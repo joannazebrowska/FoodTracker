@@ -4,6 +4,12 @@ window.onload = () => { //kod uruchomi sie dopiero gdy strona calkowicie sie zal
     .then((data) => fillProductTable(data));  //po pobraniu danych, przekazuje je do funkcji fillproducttable,ktora:
 };
 
+function formatDatePL(dateStr) {
+    if (!dateStr) return "";
+    const[year, month, day] = dateStr.split("-");
+    return `${day}.${month}.${year}`;
+}
+
 function fillProductTable(data) {
   let table = document.querySelector("#product-table tbody"); //zbiera referencje do tabeli w html (tbody)
 
@@ -19,7 +25,7 @@ function fillProductTable(data) {
     newRow.appendChild(name);
 
     let expiryDate = document.createElement("td");
-    expiryDate.textContent = x.expiryDate;
+    expiryDate.textContent = formatDatePL(x.expiryDate);
     newRow.appendChild(expiryDate);
 
     let deleteButton = document.createElement("td");
@@ -57,6 +63,23 @@ function addProduct(event) {
     })
 }
 
-function deleteProduct(event) {
 
+document.addEventListener("click", function (event) {
+  if (event.target.classList.contains("delete-btn")) {
+    const productId = event.target.getAttribute("data-id");
+    deleteProduct(productId);
+  }
+});
+
+function deleteProduct(id) {
+  fetch(`http://localhost:8080/products/${id}`, {
+    method: "DELETE"
+  })
+  .then(response => {
+    if (response.ok) {
+      location.reload(); 
+    } else {
+      console.error("Błąd podczas usuwania produktu");
+    }
+  });
 }

@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-  <html xmlns:th="http://www.thymeleaf.org">
-    <html lang="pl">
+  <html lang="pl" xmlns:th="http://www.thymeleaf.org">
       <head>
         <meta charset="UTF-8" />
         <title>FoodTracker</title>
         <link rel="stylesheet" href="style.css" />
 
         <script src="main.js" defer></script>
+
       </head>
+      
       <body>
         <div class="main-container">
           <form class="add-product-form">
             <label for="name">Nazwa produktu</label>
-            <input type="text" name="name" />
+            <input type="text" name="name" id="name" />
             <label for="expiryDate">Data przydatności</label>
-            <input type="date" name="expiryDate" />
+            <input type="date" name="expiryDate" id="expiryDate" />
             <button>Dodaj</button>
           </form>
 
@@ -32,6 +33,3 @@
         </div>
       </body>
     </html>
-
-    <!-- Comment -->
-  </html>
