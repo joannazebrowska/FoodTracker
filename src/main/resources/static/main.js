@@ -83,3 +83,15 @@ function deleteProduct(id) {
     }
   });
 }
+
+
+$(document).ready(function () {
+  $('#get-recipes').click(function () {
+    $.get('http://localhost:8080/recipes', function (response) {
+      $('#recipes-result').html('<pre>' + response + '</pre>');
+    }).fail(function () {
+      alert("Błąd podczas pobierania przepisów");
+    });
+  });
+});
+ 

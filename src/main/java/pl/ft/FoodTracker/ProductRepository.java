@@ -14,31 +14,39 @@ public class ProductRepository {
     JdbcTemplate jdbcTemplate;
 
     public List<Product> getAll() {
-        return jdbcTemplate.query("SELECT id, name, expiry_date FROM product",
-                BeanPropertyRowMapper.newInstance(Product.class));
+        return jdbcTemplate.query(
+                "SELECT id, name, expiry_date FROM product",
+                BeanPropertyRowMapper.newInstance(Product.class)
+        );
     }
 
     public Product getById(int id) {
-        return jdbcTemplate.queryForObject("SELECT id, name, expiry_date FROM product WHERE " + "id = ?",
-                BeanPropertyRowMapper.newInstance(Product.class), id);
+        return jdbcTemplate.queryForObject(
+                "SELECT id, name, expiry_date FROM product WHERE id = ?",
+                BeanPropertyRowMapper.newInstance(Product.class),
+                id
+        );
     }
 
-
     public int save(List<Product> products) {
-        products.forEach(product -> jdbcTemplate.update("INSERT INTO product(name, expiry_date) VALUES(?, ?)",
-                product.getName(), product.getExpiryDate()));
-
+        products.forEach(product -> jdbcTemplate.update(
+                "INSERT INTO product(name, expiry_date) VALUES(?, ?)",
+                product.getName(),
+                product.getExpiryDate()
+        ));
         return 1;
     }
 
     public int update(Product product) {
-        return jdbcTemplate.update("UPDATE product SET name=?, expiry_date=? WHERE id=?",
-                product.getName(), product.getExpiryDate(), product.getId());
+        return jdbcTemplate.update(
+                "UPDATE product SET name = ?, expiry_date = ? WHERE id = ?",
+                product.getName(),
+                product.getExpiryDate(),
+                product.getId()
+        );
     }
 
     public int delete(int id) {
-        return jdbcTemplate.update("DELETE FROM product WHERE id=?", id);
+        return jdbcTemplate.update("DELETE FROM product WHERE id = ?", id);
     }
-
-
 }
