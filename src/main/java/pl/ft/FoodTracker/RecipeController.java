@@ -22,7 +22,7 @@ public class RecipeController {
     private final String API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
     @GetMapping("")
-    public String getRecipes() {
+    public ResponseEntity<Map<String, String>> getRecipes() {
         List<Product> products = productRepository.getAll();
 
         StringBuilder productList = new StringBuilder();
@@ -30,7 +30,7 @@ public class RecipeController {
             productList.append(product.getName()).append(", ");
         }
 
-        String prompt = "Podaj 3 krótkie przepisy, które można zrobić z tych składników(PAMIĘTAJ ABY UŻYWAĆ TYLKO TYCH SKLADNIKÓW, zadne inne z poza listy nie sa akceptowalne!!!): " +
+        String prompt = "Podaj 3 krótkie przepisy, które można zrobić z tych składników(PAMIĘTAJ ABY UŻYWAĆ TYLKO TYCH SKLADNIKÓW, zadne inne z poza listy nie sa akceptowalne!!! nie pisz nic wiecej oprocz tych 3 przepisow!): " +
                 productList.toString();
 
         RestTemplate restTemplate = new RestTemplate();
@@ -53,11 +53,21 @@ public class RecipeController {
 
             List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
             Map<String, Object> messageData = (Map<String, Object>) choices.get(0).get("message");
+            String content = messageData.get("content").toString();
 
-            return messageData.get("content").toString();
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("recipes", content);
+
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(responseBody);
+
         } catch (Exception e) {
             e.printStackTrace();
-            return "Błąd podczas pobierania przepisów: " + e.getMessage();
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Błąd podczas pobierania przepisów: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
 }
