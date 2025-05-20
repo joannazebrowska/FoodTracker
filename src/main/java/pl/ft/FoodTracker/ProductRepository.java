@@ -15,7 +15,7 @@ public class ProductRepository {
 
     public List<Product> getAll() {
         return jdbcTemplate.query(
-                "SELECT id, name, expiry_date FROM product",
+                "SELECT id, name, expiry_date FROM product ORDER BY id",
                 BeanPropertyRowMapper.newInstance(Product.class)
         );
     }
