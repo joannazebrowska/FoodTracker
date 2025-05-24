@@ -40,7 +40,14 @@ function addProduct(event) {
   let data = new FormData(event.target);
   let newProduct = {};
 
-  data.forEach((value, key) => (newProduct[key] = value));
+  data.forEach((value, key) => {
+    if (key === "expiryDate") {
+      const [day, month, year] = value.split(".");
+      newProduct[key] = `${year}-${month}-${day}`; // backend-friendly format
+    } else {
+      newProduct[key] = value;
+    }
+  });
 
   fetch("http://localhost:8080/products", {
     method: "POST",
@@ -52,6 +59,8 @@ function addProduct(event) {
   }).then((response) => {
     if (response.ok) {
       location.reload();
+    } else {
+      console.error("Błąd podczas dodawania produktu");
     }
   });
 }
@@ -97,3 +106,9 @@ $(document).ready(function () {
     });
   });
 });
+
+
+    flatpickr("#expiryDate", {
+      dateFormat: "d.m.Y",     // 24.05.2025
+      locale: "pl"
+    });

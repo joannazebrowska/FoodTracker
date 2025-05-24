@@ -5,18 +5,38 @@
     <title>FoodTracker</title>
     <link rel="stylesheet" href="style.css" />
 
+    <link rel="icon" type="image/png" href="/white_logo.png" />
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="main.js" defer></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
   </head>
 
   <body>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pl.js"></script>
+
+  <div class="navi-header">
+    <div class="branding">
+      <img class="logo" src="logo.png" alt="logo">
+      <span class="app-name">Food Tracker</span>
+    </div>
+    <!-- <div class="cta-buttons">
+      <a href="#"><button class="cta-btn">Zaloguj</button></a>
+      <a href="#"><button class="cta-btn">Zarejestruj</button></a>
+    </div> -->
+  </div>
+
+
     <div class="main-container">
       <form class="add-product-form">
         <label for="name">Nazwa produktu</label>
         <input type="text" name="name" id="name" />
         <label for="expiryDate">Data przydatności</label>
         <input type="date" name="expiryDate" id="expiryDate" />
-        <button>Dodaj</button>
+        <button><b>Dodaj</b></button>
       </form>
 
       <table id="product-table" class="content-table">
@@ -32,9 +52,10 @@
 
       <div class="recipe-header">
         <h2>Twoje przepisy</h2>
-        <button id="get-recipes">Wyszukaj przepis</button>
+        <button id="get-recipes">Wyszukaj</button>
       </div>
       <div id="recipes-result"></div>
     </div>
+
   </body>
 </html>
