@@ -84,22 +84,35 @@ function deleteProduct(id) {
   });
 }
 
-// MODERNIZED RECIPE DISPLAY
+
+
 $(document).ready(function () {
   $('#get-recipes').click(function () {
     $.get('http://localhost:8080/recipes', function (response) {
       const recipesContainer = $('#recipes-result');
       recipesContainer.empty();
 
-      const recipes = response.recipes.split(/\n\d+\.\s/).filter(Boolean);
+      const recipes = response.recipes.split('===').map(r => r.trim()).filter(Boolean);
 
       recipes.forEach((recipe, index) => {
-        const recipeDiv = $('<div>').addClass('recipe-card');
-        recipeDiv.html(`
-          <h3>Przepis ${index + 1}</h3>
-          <p>${recipe.replace(/-\s/g, "<br>• ")}</p>
-        `);
+        const lines = recipe.split('\n');
+        const title = lines[0];
+        const content = lines.slice(1).join('<br>');
+
+        const recipeDiv = $('<div>').addClass('recipe-card').text(title);
+        recipeDiv.click(function () {
+          $('#modal-title').text(title);
+          $('#modal-body').html(content);
+          $('body').addClass('blurred'); // dodaj klasę rozmycia
+          $('#recipe-modal').removeClass('hidden');
+        });
+
         recipesContainer.append(recipeDiv);
+      });
+
+      $('.close-modal').click(function () {
+        $('#recipe-modal').addClass('hidden');
+        $('body').removeClass('blurred');
       });
     }).fail(function () {
       alert("Błąd podczas pobierania przepisów");
@@ -108,7 +121,8 @@ $(document).ready(function () {
 });
 
 
-    flatpickr("#expiryDate", {
-      dateFormat: "d.m.Y",     // 24.05.2025
-      locale: "pl"
-    });
+
+flatpickr("#expiryDate", {
+  dateFormat: "d.m.Y",  
+  locale: "pl"
+});

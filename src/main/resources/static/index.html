@@ -36,7 +36,7 @@
         <input type="text" name="name" id="name" />
         <label for="expiryDate">Data przydatności</label>
         <input type="date" name="expiryDate" id="expiryDate" />
-        <button><b>Dodaj</b></button>
+        <button>Dodaj</button>
       </form>
 
       <table id="product-table" class="content-table">
@@ -55,6 +55,17 @@
         <button id="get-recipes">Wyszukaj</button>
       </div>
       <div id="recipes-result"></div>
+    </div>
+
+    <div id="recipe-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <div class="modal-close-container">
+          <span class="close-modal" title="Zamknij">&times;</span>
+          <span class="save-modal" title="Zapisz przepis">♡</span>
+        </div>
+        <h3 id="modal-title"></h3>
+        <p id="modal-body"></p>
+      </div>
     </div>
 
   </body>
