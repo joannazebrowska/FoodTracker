@@ -30,11 +30,24 @@ public class RecipeController {
             productList.append(product.getName()).append(", ");
         }
 
-        String prompt = "Podaj dokładnie 3 krótkie przepisy kulinarne, używając wyłącznie następujących składników (każdy z poza listy jest niedozwolony!): " +
-                productList.toString() +
-                ". Zwróć wynik w następującym formacie, bez numerowania i bez dodatkowych komentarzy:\n\n" +
-                "===\nTytuł przepisu 1\nSkładniki i sposób przygotowania...\n===\nTytuł przepisu 2\nSkładniki i sposób przygotowania...\n===\nTytuł przepisu 3\nSkładniki i sposób przygotowania...\n\n" +
-                "Nie dodawaj żadnych dodatkowych informacji, tylko 3 przepisy w takim formacie jak powyżej.";
+        String prompt = """
+        Podaj dokładnie 3 krótkie przepisy kulinarne, używając TYLKO następujących składników (każdy inny jest niedozwolony!): %s. 
+        
+        Zwróć wynik dokładnie w tym formacie, bez żadnych dodatkowych znaków, komentarzy czy numerowania:
+        
+        Tytuł 1
+        Składniki i sposób przygotowania...
+        
+        ===
+        Tytuł 2
+        Składniki i sposób przygotowania...
+        
+        ===
+        Tytuł 3
+        Składniki i sposób przygotowania...
+        
+        Nie dodawaj żadnych innych informacji poza tymi trzema przepisami.
+        """.formatted(productList.toString());
 
 
         RestTemplate restTemplate = new RestTemplate();

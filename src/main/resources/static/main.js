@@ -43,7 +43,7 @@ function addProduct(event) {
   data.forEach((value, key) => {
     if (key === "expiryDate") {
       const [day, month, year] = value.split(".");
-      newProduct[key] = `${year}-${month}-${day}`; // backend-friendly format
+      newProduct[key] = `${year}-${month}-${day}`; 
     } else {
       newProduct[key] = value;
     }
@@ -92,7 +92,10 @@ $(document).ready(function () {
       const recipesContainer = $('#recipes-result');
       recipesContainer.empty();
 
-      const recipes = response.recipes.split('===').map(r => r.trim()).filter(Boolean);
+      const recipes = response.recipes
+      .trim() 
+      .split(/\n?===\n/)
+      .filter(Boolean); 
 
       recipes.forEach((recipe, index) => {
         const lines = recipe.split('\n');
@@ -103,7 +106,7 @@ $(document).ready(function () {
         recipeDiv.click(function () {
           $('#modal-title').text(title);
           $('#modal-body').html(content);
-          $('body').addClass('blurred'); // dodaj klasę rozmycia
+          $('body').addClass('blurred'); 
           $('#recipe-modal').removeClass('hidden');
         });
 
