@@ -24,7 +24,11 @@ function fillProductTable(data) {
     newRow.appendChild(expiryDate);
 
     let deleteButton = document.createElement("td");
-    deleteButton.innerHTML = `<button class="delete-btn" data-id="${x.id}">Usuń</button>`;
+    deleteButton.innerHTML = `
+    <button class="delete-btn" data-id="${x.id}" title="Usuń">
+      <img src="bin.png" alt="Usuń" class="delete-icon" />
+    </button>
+       `;
     newRow.appendChild(deleteButton);
 
     table.appendChild(newRow);
