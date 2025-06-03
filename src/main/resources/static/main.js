@@ -47,7 +47,7 @@ function addProduct(event) {
   data.forEach((value, key) => {
     if (key === "expiryDate") {
       const [day, month, year] = value.split(".");
-      newProduct[key] = `${year}-${month}-${day}`; 
+      newProduct[key] = `${year}-${month}-${day}`;
     } else {
       newProduct[key] = value;
     }
@@ -62,12 +62,41 @@ function addProduct(event) {
     body: JSON.stringify([newProduct]),
   }).then((response) => {
     if (response.ok) {
-      location.reload();
+      response.json().then((savedProducts) => {
+        savedProducts.forEach((product) => {
+          appendProductToTable(product);
+        });
+      });
+      event.target.reset(); 
     } else {
       console.error("Błąd podczas dodawania produktu");
     }
   });
 }
+
+function appendProductToTable(product) {
+  let table = document.querySelector("#product-table tbody");
+  let newRow = document.createElement("tr");
+
+  let name = document.createElement("td");
+  name.textContent = product.name;
+  newRow.appendChild(name);
+
+  let expiryDate = document.createElement("td");
+  expiryDate.textContent = formatDatePL(product.expiryDate);
+  newRow.appendChild(expiryDate);
+
+  let deleteButton = document.createElement("td");
+  deleteButton.innerHTML = `
+    <button class="delete-btn" data-id="${product.id}" title="Usuń">
+      <img src="bin.png" alt="Usuń" class="delete-icon" />
+    </button>
+  `;
+  newRow.appendChild(deleteButton);
+
+  table.appendChild(newRow);
+}
+
 
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("delete-btn")) {
@@ -81,12 +110,17 @@ function deleteProduct(id) {
     method: "DELETE",
   }).then((response) => {
     if (response.ok) {
-      location.reload();
+      const button = document.querySelector(`.delete-btn[data-id="${id}"]`);
+      if (button) {
+        const row = button.closest("tr");
+        row.remove();
+      }
     } else {
       console.error("Błąd podczas usuwania produktu");
     }
   });
 }
+
 
 
 
