@@ -82,14 +82,12 @@ function addProduct(event) {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify([newProduct]),
+    body: JSON.stringify(newProduct),
   }).then((response) => {
     if (response.ok) {
-      response.json().then((savedProducts) => {
-        savedProducts.forEach((product) => {
+        response.json().then((product) => {
           appendProductToTable(product);
         });
-      });
       event.target.reset();
     } else {
       console.error("Błąd podczas dodawania produktu");

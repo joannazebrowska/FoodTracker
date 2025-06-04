@@ -25,9 +25,12 @@ public class ProductController {
     }
 
     @PostMapping("")
-    public int add(@RequestBody List<Product> products) {
-        return productRepository.save(products);
+    public Product add(@RequestBody Product product) {
+        int newId = productRepository.save(List.of(product));
+        product.setId(newId);
+        return product;
     }
+
 
     @PutMapping("/{id}")
     public int update(@PathVariable("id") int id, @RequestBody Product updatedProduct) {
