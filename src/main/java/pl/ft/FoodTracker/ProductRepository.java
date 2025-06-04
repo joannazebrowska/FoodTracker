@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -49,4 +50,21 @@ public class ProductRepository {
     public int delete(int id) {
         return jdbcTemplate.update("DELETE FROM product WHERE id = ?", id);
     }
+
+    public List<Product> getExpiringInNext7Days() {
+        LocalDate today = LocalDate.now();
+        LocalDate inSevenDays = today.plusDays(7);
+
+        String sql = "SELECT id, name, expiry_date FROM product WHERE expiry_date BETWEEN ? AND ?";
+
+        return jdbcTemplate.query(
+                sql,
+                BeanPropertyRowMapper.newInstance(Product.class),
+                today,
+                inSevenDays
+        );
+    }
+
+
+
 }
