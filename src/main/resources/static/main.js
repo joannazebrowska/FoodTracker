@@ -130,21 +130,23 @@ $(document).ready(function () {
       const recipesContainer = $('#recipes-result');
       recipesContainer.empty();
 
-      const recipes = response.recipes
-      .trim() 
-      .split(/\n?===\n/)
-      .filter(Boolean); 
+      const raw = response.recipes.trim();
+
+      const recipes = raw
+        .split(/^\s*=+\s*$/m) 
+        .map(r => r.trim())
+        .filter(Boolean);
 
       recipes.forEach((recipe, index) => {
         const lines = recipe.split('\n');
-        const title = lines[0];
+        const title = lines[0] || `Przepis ${index + 1}`;
         const content = lines.slice(1).join('<br>');
 
         const recipeDiv = $('<div>').addClass('recipe-card').text(title);
         recipeDiv.click(function () {
           $('#modal-title').text(title);
           $('#modal-body').html(content);
-          $('body').addClass('blurred'); 
+          $('body').addClass('blurred');
           $('#recipe-modal').removeClass('hidden');
         });
 
@@ -160,6 +162,8 @@ $(document).ready(function () {
     });
   });
 });
+
+
 
 
 

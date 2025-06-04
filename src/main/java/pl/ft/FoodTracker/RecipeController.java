@@ -31,23 +31,34 @@ public class RecipeController {
         }
 
         String prompt = """
-        Podaj dokładnie 3 krótkie przepisy kulinarne, używając TYLKO następujących składników (każdy inny jest niedozwolony!): %s. 
+        Wygeneruj DOKŁADNIE 3 przepisy kulinarne, używając WYŁĄCZNIE następujących składników (inne składniki są BEZWZGLĘDNIE zabronione): %s.
         
-        Zwróć wynik dokładnie w tym formacie, bez żadnych dodatkowych znaków, komentarzy czy numerowania:
+        Każdy przepis ma się składać z trzech linijek:
+        1. Linia z nazwą przepisu
+        2. Linia ze składnikami
+        3. linie ze sposobem przygotowania 
         
-        Tytuł 1
-        Składniki i sposób przygotowania...
+        Każdy przepis ODDZIEL linią zawierającą TYLKO trzy znaki równości: === (bez spacji, numeracji ani komentarzy).
+        
+        Przykład formatu:
+        Tytuł
+        składniki: wymienić składniki
+        sposób przygotowania: opisać sposób przygotowania
         
         ===
-        Tytuł 2
-        Składniki i sposób przygotowania...
+        Tytuł
+        składniki: wymienić składniki
+        sposób przygotowania: opisać sposób przygotowania
         
         ===
-        Tytuł 3
-        Składniki i sposób przygotowania...
+        Tytuł
+        składniki: wymienić składniki
+        sposób przygotowania: opisać sposób przygotowania
         
-        Nie dodawaj żadnych innych informacji poza tymi trzema przepisami.
+        BEZ dodatkowych opisów, komentarzy, oceny przepisów ani dygresji. TYLKO format powyżej.
         """.formatted(productList.toString());
+
+
 
 
         RestTemplate restTemplate = new RestTemplate();
