@@ -10,8 +10,33 @@ function formatDatePL(dateStr) {
   return `${day}.${month}.${year}`;
 }
 
+function createDateCell(dateStr) {
+  const expiryDate = document.createElement("td");
+
+  const today = new Date();
+  const productDate = new Date(dateStr);
+  const diffDays = Math.ceil((productDate - today) / (1000 * 60 * 60 * 24));
+
+  const indicator = document.createElement("span");
+  indicator.classList.add("date-indicator");
+
+  if (diffDays < 0) {
+    indicator.classList.add("expired");
+  } else if (diffDays <= 7) {
+    indicator.classList.add("warning");
+  } else {
+    indicator.classList.add("fresh");
+  }
+
+  expiryDate.appendChild(indicator);
+  expiryDate.appendChild(document.createTextNode(formatDatePL(dateStr)));
+
+  return expiryDate;
+}
+
 function fillProductTable(data) {
   let table = document.querySelector("#product-table tbody");
+  table.innerHTML = "";
   data.forEach((x) => {
     let newRow = document.createElement("tr");
 
@@ -19,16 +44,14 @@ function fillProductTable(data) {
     name.textContent = x.name;
     newRow.appendChild(name);
 
-    let expiryDate = document.createElement("td");
-    expiryDate.textContent = formatDatePL(x.expiryDate);
-    newRow.appendChild(expiryDate);
+    newRow.appendChild(createDateCell(x.expiryDate));
 
     let deleteButton = document.createElement("td");
     deleteButton.innerHTML = `
-    <button class="delete-btn" data-id="${x.id}" title="Usuń">
-      <img src="bin.png" alt="Usuń" class="delete-icon" />
-    </button>
-       `;
+      <button class="delete-btn" data-id="${x.id}" title="Usuń">
+        <img src="bin.png" alt="Usuń" class="delete-icon" />
+      </button>
+    `;
     newRow.appendChild(deleteButton);
 
     table.appendChild(newRow);
@@ -67,7 +90,7 @@ function addProduct(event) {
           appendProductToTable(product);
         });
       });
-      event.target.reset(); 
+      event.target.reset();
     } else {
       console.error("Błąd podczas dodawania produktu");
     }
@@ -82,9 +105,7 @@ function appendProductToTable(product) {
   name.textContent = product.name;
   newRow.appendChild(name);
 
-  let expiryDate = document.createElement("td");
-  expiryDate.textContent = formatDatePL(product.expiryDate);
-  newRow.appendChild(expiryDate);
+  newRow.appendChild(createDateCell(product.expiryDate));
 
   let deleteButton = document.createElement("td");
   deleteButton.innerHTML = `
@@ -96,7 +117,6 @@ function appendProductToTable(product) {
 
   table.appendChild(newRow);
 }
-
 
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("delete-btn")) {
@@ -121,9 +141,6 @@ function deleteProduct(id) {
   });
 }
 
-
-
-
 $(document).ready(function () {
   $('#get-recipes').click(function () {
     $.get('http://localhost:8080/recipes', function (response) {
@@ -133,7 +150,7 @@ $(document).ready(function () {
       const raw = response.recipes.trim();
 
       const recipes = raw
-        .split(/^\s*=+\s*$/m) 
+        .split(/^\s*=+\s*$/m)
         .map(r => r.trim())
         .filter(Boolean);
 
@@ -144,11 +161,9 @@ $(document).ready(function () {
 
         const recipeDiv = $('<div>').addClass('recipe-card').text(title);
         recipeDiv.click(function () {
-          $('#modal-title').text(title);
-          $('#modal-body').html(content);
-          $('body').addClass('blurred');
-          $('#recipe-modal').removeClass('hidden');
+          showGeneratedRecipeInModal({ title, content });
         });
+
 
         recipesContainer.append(recipeDiv);
       });
@@ -163,11 +178,88 @@ $(document).ready(function () {
   });
 });
 
-
-
-
-
 flatpickr("#expiryDate", {
-  dateFormat: "d.m.Y",  
+  dateFormat: "d.m.Y",
   locale: "pl"
+});
+
+
+function saveRecipe(title, content) {
+  const saved = JSON.parse(localStorage.getItem("savedRecipes")) || [];
+  if (!saved.find(r => r.title === title)) {
+    saved.push({ title, content });
+    localStorage.setItem("savedRecipes", JSON.stringify(saved));
+    renderSavedRecipes();
+  }
+}
+
+function deleteRecipe(title) {
+  let saved = JSON.parse(localStorage.getItem("savedRecipes")) || [];
+  saved = saved.filter(r => r.title !== title);
+  localStorage.setItem("savedRecipes", JSON.stringify(saved));
+  renderSavedRecipes();
+  closeModal();
+}
+
+function renderSavedRecipes() {
+  const saved = JSON.parse(localStorage.getItem("savedRecipes")) || [];
+  const container = $("#saved-recipes");
+  container.empty();
+
+  saved.forEach((recipe, index) => {
+    const card = $("<div>").addClass("recipe-card").text(recipe.title);
+
+    card.click(() => {
+      $("#modal-title").text(recipe.title);
+      $("#modal-body").html(recipe.content);
+      $("#recipe-modal").removeClass("hidden");
+      $("body").addClass("blurred");
+
+      // serduszko usuwa przepis z ulubionych
+      $(".save-modal").text("♡").attr("title", "Usuń przepis");
+      $(".save-modal").off("click").on("click", () => {
+        deleteRecipe(recipe.title);
+      });
+
+      $(".close-modal").off("click").on("click", closeModal);
+    });
+
+    container.append(card);
+  });
+}
+
+
+function showGeneratedRecipeInModal(recipe) {
+  const saved = JSON.parse(localStorage.getItem("savedRecipes")) || [];
+  const alreadySaved = saved.find(r => r.title === recipe.title);
+
+  $("#modal-title").text(recipe.title);
+  $("#modal-body").html(recipe.content);
+  $("#recipe-modal").removeClass("hidden");
+  $("body").addClass("blurred");
+
+  $(".save-modal").text("♡");
+
+  if (alreadySaved) {
+    $(".save-modal").attr("title", "Usuń przepis").off("click").on("click", () => {
+      deleteRecipe(recipe.title);
+    });
+  } else {
+    $(".save-modal").attr("title", "Zapisz przepis").off("click").on("click", () => {
+      saveRecipe(recipe.title, recipe.content);
+      $(".save-modal").attr("title", "Usuń przepis");
+    });
+  }
+
+  $(".close-modal").off("click").on("click", closeModal);
+}
+
+function closeModal() {
+  $("#recipe-modal").addClass("hidden");
+  $("body").removeClass("blurred");
+}
+
+$(document).ready(function () {
+  renderSavedRecipes();
+  $(".close-modal").click(closeModal);
 });
