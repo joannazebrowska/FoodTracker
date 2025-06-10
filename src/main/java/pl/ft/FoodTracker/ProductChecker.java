@@ -28,7 +28,6 @@ public class ProductChecker {
                 System.out.println("- " + p.getName() + " → " + p.getExpiryDate());
             }
 
-            // DODANE: wysyłanie maila
             emailService.sendExpiringProductsEmail(expiringSoon);
             System.out.println("email z produktami zostal wyslany.");
         }
